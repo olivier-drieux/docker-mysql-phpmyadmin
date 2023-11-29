@@ -1,0 +1,43 @@
+version: '3.4'
+
+volumes:
+    uploads:
+        driver: local
+    logs:
+        driver: local
+    mysql:
+        driver: local
+
+networks:
+    db_net:
+
+services:
+    mysql:
+        image: mariadb:10.5
+        container_name: mysql
+        restart: always
+        expose:
+            - '3306:3306'
+        networks:
+            - db_net
+        volumes:
+            - ./mysql:/var/lib/mysql:rw
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_USER=user
+            - MYSQL_PASSWORD=password
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        restart: always
+        depends_on:
+            - mysql
+        ports:
+            - '8080:80'
+        networks:
+            - db_net
+        environment:
+            - MYSQL_USERNAME=user
+            - MYSQL_ROOT_PASSWORD=password
+            - PMA_HOST=mysql
