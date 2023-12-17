@@ -1,10 +1,6 @@
 version: '3.4'
 
 volumes:
-    uploads:
-        driver: local
-    logs:
-        driver: local
     mysql:
         driver: local
 
@@ -38,6 +34,6 @@ services:
         networks:
             - db_net
         environment:
-            - MYSQL_USERNAME=user
-            - MYSQL_ROOT_PASSWORD=password
+            - PMA_USER=root
+            - PMA_PASSWORD=password
             - PMA_HOST=mysql
